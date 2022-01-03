@@ -1,0 +1,17 @@
+{
+  "name": "aeon-machine",
+  "version": "0.0.1",
+  "description": "",
+  "main": "Aeon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "3adly96 ",
+  "license": "ISC",
+  "dependencies": {
+    "debug": "^4.3.3",
+    "ion-cortex": "^1.2.9",
+    "ion-sortedset": "^0.0.3"
+  }
+}
