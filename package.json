@@ -1,13 +1,13 @@
 {
   "name": "aeon-machine",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "Aeon.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "3adly96 https://github.com/3adly96/Aeon-Machine",
+  "author": "3adly96 https://github.com/3adly96",
   "license": "ISC",
   "dependencies": {
     "debug": "*",

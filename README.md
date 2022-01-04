@@ -10,7 +10,7 @@ Aeon-Machine is built to push events to be executed with cortex to ion-sortedset
 
 ```jsx
 const Cortex = require('ion-cortex');
-const Aeon = require('Aeon-Machine');
+const Aeon = require('aeon-machine');
 
 const cortex = new Cortex({
     prefix: "spacejat",
