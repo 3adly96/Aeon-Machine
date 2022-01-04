@@ -66,7 +66,7 @@ aeon.addCortexCall({ data });
 ```jsx
 
 const Cortex = require('ion-cortex');
-const Aeon = require('./Aeon');
+const Aeon = require('aeon-machine');
 
 const cortex = new Cortex({
     prefix: "spacejat",
