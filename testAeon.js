@@ -11,7 +11,9 @@ const cortex = new Cortex({
         }
     }
 });
-const aeon = new Aeon({ cortex });
+/* timestampFrom is the timestamp that the listener will start listening from 
+   segmantDuration is the amount of time the listener will segmant the timestamps*/
+const aeon = new Aeon({ cortex , timestampFrom: Date.now(), segmantDuration: 500 });
 
 const data = {
     cortex: { method: 'emitToAllOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },

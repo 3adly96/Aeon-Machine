@@ -2,11 +2,12 @@ const SortedSetManager = require('ion-sortedset');
 const debug = require('debug')('aeon-machine');
 
 module.exports = class Aeon {
-  constructor({ cortex }) {
+  constructor({ cortex, timestampFrom, segmantDuration}) {
     this.cortex = cortex;
     this.sortedSet = new SortedSetManager({ url: cortex.stream.url });
     this.consumer = this.sortedSet.consumer({
-      timestamp: Date.now(),
+      timestamp: timestampFrom,
+      segmantDuration: segmantDuration,
       key: 'Aeon',
       keepAlive: true,
       onMessage: async (data) => {
