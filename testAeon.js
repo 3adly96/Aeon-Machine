@@ -21,5 +21,5 @@ const data = {
     onError: { method: 'emitToAllOf', args: { type: 'listener', call: 'onError', data: '' } }
 }
 setTimeout(() => {
-    aeon.addCortexCall({ data })
+    aeon.call({ data })
 }, 5000)

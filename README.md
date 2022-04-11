@@ -4,7 +4,11 @@
 
 ## Why Aeon-Machine
 
-Aeon-Machine is built to push events to be executed with cortex to ion-sortedset.
+Aeon-Machine is built to push events to be executed with cortex to ion-sortedset this allows you to trigger any function subscribed in cortex in the future.
+
+## How Does Aeon-Machine work
+
+It schedules the calls in [ion-sortedset](https://www.npmjs.com/package/ion-sortedset) that produces and consumes redis sorted sets in non-blocking manner, then ion-sortedset notifies when a call is its time to trigger to Aeon, then Aeon executes that cortex call.
 
 ## Create Aeon-Machine instance
 
@@ -22,14 +26,16 @@ const cortex = new Cortex({
         }
     }
 });
-/* timestampFrom is the timestamp that the listener will start listening from 
-   segmantDuration is the amount of time the listener will segmant the timestamps*/
+/**
+ * timestampFrom is the timestamp that the listener will start listening from 
+ * segmantDuration is the amount of time in millseconds the listener will segmant the timestamps and listen to each bulk and executes the calls in each bulk
+*/
 const aeon = new Aeon({ cortex , timestampFrom: Date.now(), segmantDuration: 500 });
 ```
 
 ## Functions
 
-### addCortexCall
+### call
 
 Used to push an event in the sortedset with a certain timestamp that the event will be executed in.
 
@@ -37,28 +43,25 @@ Used to push an event in the sortedset with a certain timestamp that the event w
 
 ```jsx
 
-const data = {
+aeon.call({ 
     cortex: {
-              method: 'emitToAllOf', 
-              args: {
-                      type: 'listener',
-                      call: 'math.add',
-                      data: { a: 1, b: 4 } 
-              }
+        method: 'emitToAllOf', 
+        args: {
+            type: 'listener',
+            call: 'math.add',
+            data: { a: 1, b: 4 } 
+        }
     },
     at: Date.now() + 30000,
     onError:{
-              method: 'emitToAllOf',
-              args: { 
-                    type: 'listener',
-                    call: 'onError',
-                    data: '' 
-                    }
+        method: 'emitToAllOf',
+            args: { 
+                type: 'listener',
+                call: 'onError',
+                data: '' 
             }
-}
-
-aeon.addCortexCall({ data });
-
+        } 
+    });
 
 ```
 
@@ -82,14 +85,12 @@ const cortex = new Cortex({
 
 const aeon = new Aeon({ cortex , timestampFrom: Date.now(), segmantDuration: 500 });
 
-const data = {
-    cortex: { method: 'emitToAllOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },
-    at: Date.now() + 30000,
-    onError: { method: 'emitToAllOf', args: { type: 'listener', call: 'onError', data: '' } }
-}
-
 setTimeout(() => {
-    aeon.addCortexCall({ data })
+    aeon.call({ 
+        cortex: { method: 'emitToAllOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },
+        at: Date.now() + 30000,
+        onError: { method: 'emitToAllOf', args: { type: 'listener', call: 'onError', data: '' } } 
+    })
 }, 5000)
 
 ```

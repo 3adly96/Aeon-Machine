@@ -20,7 +20,7 @@ module.exports = class Aeon {
 
   }
 
-  async addCortexCall({ data }) {
+  async call({ data }) {
     try {
       const cortexCall = data.cortex;
       let args = cortexCall.args;
