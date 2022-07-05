@@ -1,4 +1,4 @@
-const SortedSetManager = require('ion-sortedset');
+const SortedSetManager = require('../ion-sortedset/index');
 const debug = require('debug')('aeon-machine');
 
 module.exports = class Aeon {
@@ -33,11 +33,12 @@ module.exports = class Aeon {
         data: args.data
       }
       json['onError'] = data.onError
-      await this.producer.emit({ key: 'Aeon', json, timestamp: data.at });
-      return 'scheduled';
+      let a = this.producer.emit({ key: 'Aeon', json, timestamp: data.at });
+      return a;
     } catch (err) {
       debug('===> Error at cortex call <===');
       debug(err);
+      return { error: err }
     }
   }
 
