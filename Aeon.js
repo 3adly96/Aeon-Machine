@@ -1,4 +1,4 @@
-const SortedSetManager = require('../ion-sortedset/index');
+const SortedSetManager = require('ion-sortedset');
 const debug = require('debug')('aeon-machine');
 
 module.exports = class Aeon {
