@@ -14,14 +14,10 @@ const cortex = new Cortex({
 /* timestampFrom is the timestamp that the listener will start listening from 
    segmantDuration is the amount of time the listener will segmant the timestamps*/
 const aeon = new Aeon({ cortex , timestampFrom: Date.now(), segmantDuration: 500 });
-
-const data = {
-    cortex: { method: 'emitToAllOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },
-    at: Date.now() + 30000,
-    onError: { method: 'emitToAllOf', args: { type: 'listener', call: 'onError', data: '' } }
-}
+let count = 0;
 setInterval(async () => {
     const a = await aeon.call( {
+        id: count++,
         cortex: { method: 'emitToAllOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },
         at: Date.now() + 30000,
         onError: { method: 'emitToAllOf', args: { type: 'listener', call: 'onError', data: '' } }

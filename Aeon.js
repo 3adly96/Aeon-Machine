@@ -1,4 +1,4 @@
-const SortedSetManager = require('ion-sortedset');
+const SortedSetManager = require('../ion-sortedset');
 const debug = require('debug')('aeon-machine');
 
 module.exports = class Aeon {
@@ -20,12 +20,13 @@ module.exports = class Aeon {
 
   }
 
-  async call({ cortex, at, onError }) {
-    let data = { cortex, at, onError }
+  async call({ id, cortex, at, onError }) {
+    let data = { id, cortex, at, onError }
     try {
       const cortexCall = data.cortex;
       let args = cortexCall.args;
       let json = {}
+      json['id']   = id;
       json['call'] = cortexCall.method;
       json['args'] = {
         type: args.type,

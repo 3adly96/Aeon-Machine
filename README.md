@@ -44,6 +44,7 @@ Used to push an event in the sortedset with a certain timestamp that the event w
 ```jsx
 
 aeon.call({ 
+    id: 'adsfjnafsdl',
     cortex: {
         method: 'emitToAllOf', 
         args: {
@@ -64,7 +65,7 @@ aeon.call({
     });
 
 ```
-
+id is the unique identifier that is checked if that function was already scheduled with the same id or not if the function was already scheduled then it will not be scheduled again.
 ### Advanced Example
 #### Aeon.js
 ```jsx
@@ -87,6 +88,7 @@ const aeon = new Aeon({ cortex , timestampFrom: Date.now(), segmantDuration: 500
 
 setTimeout(() => {
     aeon.call({ 
+        id: 'adsfjnafsdl',
         cortex: { method: 'emitToAllOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },
         at: Date.now() + 30000,
         onError: { method: 'emitToAllOf', args: { type: 'listener', call: 'onError', data: '' } } 
