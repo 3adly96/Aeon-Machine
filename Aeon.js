@@ -3,12 +3,13 @@ const debug = require('debug')('aeon-machine');
 
 module.exports = class Aeon {
   constructor({ cortex, timestampFrom, segmantDuration}) {
-    this.cortex = cortex;
-    this.sortedSet = new SortedSetManager({ url: cortex.stream.url });
-    this.consumer = this.sortedSet.consumer({
+    this.cortex     = cortex;
+    this.key        = 'Aeon';
+    this.sortedSet  = new SortedSetManager({ url: cortex.stream.url });
+    this.consumer   = this.sortedSet.consumer({
       timestamp: timestampFrom,
       segmantDuration: segmantDuration,
-      key: 'Aeon',
+      key: this.key,
       keepAlive: true,
       onMessage: async (data) => {
         await this.execCortex({ data });
@@ -16,8 +17,7 @@ module.exports = class Aeon {
       onError: (data) => { debug(`got error`, data) },
       onClose: () => { debug(`got close`) },
     });
-    this.producer = this.sortedSet.producer();
-
+    this.producer   = this.sortedSet.producer();
   }
 
   async call({ id, cortex, at, onError }) {
@@ -34,8 +34,7 @@ module.exports = class Aeon {
         data: args.data
       }
       json['onError'] = data.onError
-      let a = this.producer.emit({ key: 'Aeon', json, timestamp: data.at });
-      return a;
+      return this.producer.emit({ key: this.key, json, timestamp: data.at });
     } catch (err) {
       debug('===> Error at cortex call <===');
       debug(err);
@@ -45,15 +44,14 @@ module.exports = class Aeon {
 
   async execCortex({ data }) {
     try {
-      data = data.value;
-      await this.cortex[data.call](data.args,
-        (data) => {
-          if (data.error && data.OnError) {
-            debug(`Error:`, data.error);
-            this.execError({ data: data.OnError });
+      await this.cortex[data.value.call](data.value.args, (result) => {
+          if (result.error) {
+            debug(`Error:`, result.error);
+            if (result.OnError) this.execError({ data: result.OnError });
           } else {
             debug(`*** reached listener and returning ***`)
-            debug(data);
+            debug(result);
+            this.producer.setAsExecuted({ key: this.key, id: data.id, json: data.value })
           }
         });
     } catch (err) {
