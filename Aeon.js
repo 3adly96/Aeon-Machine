@@ -3,13 +3,15 @@ const debug = require('debug')('aeon-machine');
 
 module.exports = class Aeon {
   constructor({ cortex, timestampFrom, segmantDuration}) {
-    this.cortex     = cortex;
-    this.key        = 'Aeon';
-    this.sortedSet  = new SortedSetManager({ url: cortex.stream.url });
-    this.consumer   = this.sortedSet.consumer({
+    this.cortex       = cortex;
+    this.key          = 'Aeon';
+    this.executionkey = 'AeonExecution';
+    this.sortedSet    = new SortedSetManager({ url: cortex.stream.url });
+    this.consumer     = this.sortedSet.consumer({
       timestamp: timestampFrom,
       segmantDuration: segmantDuration,
       key: this.key,
+      executionkey: this.executionkey,
       keepAlive: true,
       onMessage: async (data) => {
         await this.execCortex({ data });
@@ -47,11 +49,11 @@ module.exports = class Aeon {
       await this.cortex[data.value.call](data.value.args, (result) => {
           if (result.error) {
             debug(`Error:`, result.error);
-            if (result.OnError) this.execError({ data: result.OnError });
+            if (data.value.onError) this.execError({ data: data.value.onError });
           } else {
             debug(`*** reached listener and returning ***`)
             debug(result);
-            this.producer.setAsExecuted({ key: this.key, id: data.id, json: data.value })
+            this.producer.setAsExecuted({ executionkey: this.executionkey, id: data.id, json: data.value })
           }
         });
     } catch (err) {

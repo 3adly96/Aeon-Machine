@@ -3,7 +3,7 @@ const Aeon = require('./Aeon');
 
 const cortex = new Cortex({
     prefix: "spacejat",
-    url: "redis://127.0.0.1:6379",
+    url: "redis://default:5x2DNgNcx2K4RqQnusjnfF3f@104.248.33.48:6011",
     type: 'TimeMachine',
     state: () => {
         return {
@@ -19,8 +19,8 @@ setInterval(async () => {
     const a = await aeon.call( {
         id: count++,
         cortex: { method: 'emitToAllOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },
-        at: Date.now() + 30000,
+        at: Date.now() + 3000,
         onError: { method: 'emitToAllOf', args: { type: 'listener', call: 'onError', data: '' } }
     })
     console.log(a)
-}, 5000)
+}, 2000)

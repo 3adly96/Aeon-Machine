@@ -1,8 +1,10 @@
 const Cortex = require('ion-cortex');
+const NanoTimer = require('nanotimer');
+const timer        = new NanoTimer();
 
 const cortex = new Cortex({
     prefix: "spacejat",
-    url: "redis://127.0.0.1:6379",
+    url: "redis://default:5x2DNgNcx2K4RqQnusjnfF3f@104.248.33.48:6011",
     type: 'listener',
     state: () => {
         return {
@@ -14,6 +16,9 @@ const cortex = new Cortex({
 const math = {
     add: async (data) => {
         let sum = data['a'] + data['b'];
+        console.time('sum')
+        await delay('4s')
+        console.timeEnd('sum')
         return sum
     },
     sub: async (data) => {
@@ -68,3 +73,11 @@ const startListener = () => {
 }
 
 startListener();
+
+async function delay(time) {
+    return new Promise((resolve, reject) => {
+      timer.setTimeout(() => {
+        resolve(true);
+      }, '', time)
+    })
+  }
