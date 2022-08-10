@@ -10,13 +10,14 @@ const cortex = new Cortex({
         return {
             info: "listener info"
         }
-    }
+    },
+    defaultTimeout: 10000
 });
 
 const math = {
     add: async (data) => {
         let sum = data['a'] + data['b'];
-        await delay('2s')
+        await delay('6s')
         return sum
     },
     sub: async (data) => {

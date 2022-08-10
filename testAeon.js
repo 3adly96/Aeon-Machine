@@ -9,7 +9,8 @@ const cortex = new Cortex({
         return {
             info: "listener info"
         }
-    }
+    },
+    defaultTimeout: 10000,
 });
 /* timestampFrom is the timestamp that the listener will start listening from 
    segmantDuration is the amount of time the listener will segmant the timestamps*/
