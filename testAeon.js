@@ -18,9 +18,9 @@ let count = 0;
 setInterval(async () => {
     const a = await aeon.call( {
         id: count++,
-        cortex: { method: 'emitToAllOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },
+        cortex: { method: 'emitToOneOf', args: { type: 'listener', call: 'math.add', data: { a: 1, b: 4 } } },
         at: Date.now() + 3000,
-        onError: { method: 'emitToAllOf', args: { type: 'listener', call: 'onError', data: '' } }
+        onError: { method: 'emitToOneOf', args: { type: 'listener', call: 'onError', data: '' } }
     })
     console.log(a)
-}, 2000)
+}, 20000)

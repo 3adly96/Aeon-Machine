@@ -46,9 +46,10 @@ module.exports = class Aeon {
 
   async execCortex({ data }) {
     try {
-      await this.cortex[data.value.call](data.value.args, (result) => {
+      this.cortex[data.value.call](data.value.args, (result) => {
           if (result.error) {
-            debug(`Error:`, result.error);
+            debug(`Error: ${result.error} with args`);
+            debug(data.value.args);
             if (data.value.onError) this.execError({ data: data.value.onError });
           } else {
             debug(`*** reached listener and returning ***`)

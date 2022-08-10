@@ -16,9 +16,7 @@ const cortex = new Cortex({
 const math = {
     add: async (data) => {
         let sum = data['a'] + data['b'];
-        console.time('sum')
-        await delay('4s')
-        console.timeEnd('sum')
+        await delay('2s')
         return sum
     },
     sub: async (data) => {
