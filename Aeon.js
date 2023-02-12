@@ -1,6 +1,41 @@
 const SortedSetManager = require('../ion-sortedset');
 const debug = require('debug')('aeon-machine');
 
+process.on("SIGTERM", function () {
+  console.log('aeon process existed: SIGTERM')
+  process.exit(1)
+});
+
+process.on("SIGINT", function () {
+  console.log('aeon process existed: SIGINT');
+  setTimeout(() => {
+      process.exit(1)
+  }, 2000);
+});
+
+process.on('exit', () => {
+  console.log('exit aeon')
+  setTimeout(() => {
+      process.exit(1)
+  }, 2000);
+})
+
+process.on('error', function (err) {
+  console.log(err);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', async (reason, promise) => {
+  console.log(reason);
+  promise.then(e => console.log(e)).catch(e => console.log(e));
+  process.exit(1);
+})
+
+process.on('uncaughtException', function (err) {
+  console.log(err);
+  process.exit(1);
+})
+
 module.exports = class Aeon {
   constructor({ cortex, timestampFrom, segmantDuration}) {
     this.cortex       = cortex;
